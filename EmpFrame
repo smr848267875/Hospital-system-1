@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.Button;
 import java.awt.Label;
 import java.awt.TextField;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -124,5 +125,107 @@ public class EmpFrame implements ActionListener {
 
 		frm4.setResizable(false);// 固定窗口的大小
 
-	
+		try {
+			stmt = JdbcUtil.getConnection().createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object soruce = e.getSource();
+		ResultSet rs = null;
+		String _name = lst51.getText().trim();
+		if (soruce == qry) {
+
+			try {
+				sql = "select * from Doctor where Dname='"
+						+ lst51.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					lst51.setText(rs.getString(1));
+					lst52.setText(rs.getString(2));
+					lst53.setText(rs.getString(5));
+					lst54.setText(rs.getString(7));
+					lst55.setText(rs.getString(4));
+					lst56.setText(rs.getString(3));
+					lst57.setText(rs.getString(6));
+					lst58.setText(rs.getString(9));
+					txa2.setText(rs.getString(8));
+				} else {
+					JOptionPane
+							.showMessageDialog(null, "没有查询到【" + _name + "】！");
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == del) {
+
+			try {
+				if (_name.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的姓名！");
+					return;
+				}
+				sql = "delete from Doctor where Dname='"
+						+ lst51.getText().trim() + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane
+							.showMessageDialog(null, "没有查询到到【" + _name + "】");
+				} else {
+					JOptionPane.showMessageDialog(null, "删除【" + _name + "】成功！");
+					clearFrame();
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == add) {
+			try {
+
+				if (_name.equals("")) {
+					JOptionPane.showMessageDialog(null, "姓名不能为空！");
+					return;
+				} else if (lst52.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "编号不能为空！");
+					return;
+				}
+				sql = "select * from Doctor where Dno='"
+						+ lst51.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "编号【"
+							+ lst51.getText().trim() + "】已经存在，请重新输入！");
+					return;
+				}
+				sql = "insert into Doctor(Dname,Dno,Dsex,Dposition,Dtelephone,Dage,Drecord,Dexperience,Djudgement) values('"
+						+ lst51.getText().trim()
+						+ "','"
+						+ lst52.getText().trim()
+						+ "','"
+						+ lst53.getText().trim()
+						+ "','"
+						+ lst54.getText().trim()
+						+ "','"
+						+ lst55.getText().trim()
+						+ "','"
+						+ lst56.getText().trim()
+						+ "','"
+						+ lst57.getText().trim()
+						+ "','"
+						+ lst58.getText().trim()
+						+ "','"
+						+ txa2.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrame();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+
+}
