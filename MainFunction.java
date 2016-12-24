@@ -48,3 +48,19 @@ public class MainFunction implements ActionListener {
 		frmX.setResizable(false);// 固定窗口的大小
 
 	}
+	public void actionPerformed(ActionEvent e) {
+		Object soruce = e.getSource();
+		if (soruce == patientInfo) {
+			new PatientFrame();
+		}
+		if (soruce == price) {
+			new MedicineFrame();
+		}
+		if (soruce == chufang) {
+			new ChufangFrame();
+		}
+		if (soruce == emp) {
+			new EmpFrame();
+		}
+	}
+}
