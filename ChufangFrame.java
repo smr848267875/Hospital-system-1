@@ -82,3 +82,73 @@ public class ChufangFrame implements ActionListener {
 		}
 
 	}
+        public void actionPerformed(ActionEvent e) {
+		Object soruce = e.getSource();
+		ResultSet rs = null;
+		String _id = lst41.getText().trim();
+		if (soruce == qry) {
+			try {
+
+				if (_id.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的处方编号！");
+					return;
+				}
+
+				sql = "select * from Presno where Presno='" + _id + "'";
+
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					txa1.setText(rs.getString(2));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + _id + "】!");
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == del) {
+			try {
+				if (_id.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的处方编号！");
+					return;
+				}
+
+				sql = "delete from Presno where Presno='" + _id + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + _id + "】！");
+				} else {
+					JOptionPane.showMessageDialog(null, "删除【" + _id + "】成功！");
+					clearFrame();
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == add) {
+			try {
+				if (_id.equals("")) {
+					JOptionPane.showMessageDialog(null, "处方编号不能为空！");
+					return;
+				}
+
+				sql = "select * from Presno where Presno='" + _id + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "处方编号【" + _id
+							+ "】已经存在，请重新输入！");
+					return;
+				}
+
+				sql = "insert into Presno" + "(Presno,Pcontent) values('"
+						+ lst41.getText().trim() + "','"
+						+ txa1.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrame();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+}
