@@ -278,3 +278,277 @@ public class PatientFrame implements ActionListener {
 		}
 
 	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object soruce = e.getSource();
+		ResultSet rs = null;
+		if (soruce == addA) {
+			try {
+				if (txf1.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "病人编号不能为空！");
+					return;
+				} else if (txf2.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "姓名不能为空！");
+					return;
+				}
+
+				sql = "select * from Patient where Pno='"
+						+ txf1.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "病人编号【"
+							+ txf1.getText().trim() + "】已经存在，请重新输入！");
+					return;
+				}
+				sql = "insert into Patient(Pno,Pname,Psex,Pbirthday,Pplace,Pbirthplace,Pcondition,Pbudget) values('"
+						+ txf1.getText().trim()
+						+ "','"
+						+ txf2.getText().trim()
+						+ "','"
+						+ txf3.getText().trim()
+						+ "','"
+						+ txf4.getText().trim()
+						+ "','"
+						+ txf5.getText().trim()
+						+ "','"
+						+ txf6.getText().trim()
+						+ "','"
+						+ txf7.getText().trim()
+						+ "','"
+						+ txf8.getText().trim()
+						+ "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrameA();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == delA) {
+			try {
+
+				if (txf2.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的病人姓名！");
+					return;
+				}
+
+				sql = "delete from Patient where Pname='"
+						+ txf2.getText().trim() + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ txf2.getText().trim() + "】");
+				} else {
+					JOptionPane.showMessageDialog(null, "已删除【"
+							+ txf2.getText().trim() + "】的信息");
+					clearFrameA();
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == qryA) {
+			try {
+
+				if (txf2.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的病人姓名！");
+					return;
+				}
+
+				sql = "select * from Patient where Pname='"
+						+ txf2.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					txf1.setText(rs.getString(1));
+					txf2.setText(rs.getString(2));
+					txf3.setText(rs.getString(3));
+					txf4.setText(rs.getString(4));
+					txf5.setText(rs.getString(5));
+					txf6.setText(rs.getString(6));
+					txf7.setText(rs.getString(7));
+					txf8.setText(rs.getString(8));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ txf2.getText().trim() + "】的信息！");
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == addB) {
+			try {
+
+				
+				if (lst11.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "病人编号不能为空！");
+					return;
+				} else if (lst12.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "姓名不能为空！");
+					return;
+				}else if (lst16.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "处方编号不能为空！");
+					return;
+				}
+				sql = "select * from Hospitalize where Pname='"
+					+ lst12.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "病人编号【"
+							+ lst12.getText().trim() + "】已经存在，请重新输入！");
+					return;
+				}
+
+				sql = "insert into Hospitalize(Pno,Pname,Dsubject,Dmdoctor,Dcause,Dpresno,Dpill) values('"
+						+ lst11.getText().trim()
+						+ "','"
+						+ lst12.getText().trim()
+						+ "','"
+						+ lst13.getText().trim()
+						+ "','"
+						+ lst14.getText().trim()
+						+ "','"
+						+ lst15.getText().trim()
+						+ "','"
+						+ lst16.getText().trim()
+						+ "','"
+						+ lst17.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrameB();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == delB) {
+			try {
+
+				if (lst12.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的病人姓名！");
+					return;
+				}
+
+				sql = "delete from Hospitalize where Pname='"
+						+ lst12.getText().trim() + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ lst12.getText().trim() + "】");
+				} else {
+					JOptionPane.showMessageDialog(null, "已删除【"
+							+ lst12.getText().trim() + "】的信息");
+					clearFrameB();
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == qrbB) {
+			try {
+
+				if (lst12.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的病人姓名！");
+					return;
+				}
+
+				sql = "select * from Hospitalize where Pname='"
+						+ lst12.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					lst11.setText(rs.getString(1));
+					lst12.setText(rs.getString(2));
+					lst13.setText(rs.getString(3));
+					lst14.setText(rs.getString(4));
+					lst15.setText(rs.getString(5));
+					lst16.setText(rs.getString(6));
+					lst17.setText(rs.getString(7));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ lst12.getText().trim() + "】的信息！");
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == addC) {
+			try {
+
+				if (lst21.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "病人编号不能为空！");
+					return;
+				}
+				
+				sql = "select * from Charge where Pno='"
+					+ lst21.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "病人编号【"
+							+ lst21.getText().trim() + "】已经存在，请重新输入！");
+					return;
+				}
+
+				sql = "insert into Charge(Pno,Cmedicine,Creg,Cdisposal,Cexamine) values('"
+						+ lst21.getText().trim()
+						+ "','"
+						+ lst22.getText().trim()
+						+ "','"
+						+ lst23.getText().trim()
+						+ "','"
+						+ lst24.getText().trim()
+						+ "','"
+						+ lst25.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrameC();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == delC) {
+			try {
+
+				if (lst21.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的病人编号！");
+					return;
+				}
+				sql = "delete from Charge where Pno='" + lst21.getText().trim()
+						+ "'";
+
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ lst21.getText().trim() + "】");
+				} else {
+					JOptionPane.showMessageDialog(null, "已删除【"
+							+ lst21.getText().trim() + "】的信息");
+					clearFrameC();
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
+		else if (soruce == qryC) {
+			try {
+
+				if (lst21.getText().trim().equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的病人编号！");
+					return;
+				}
+				sql = "select * from Charge where Pno='"
+						+ lst21.getText().trim() + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					lst21.setText(rs.getString(1));
+					lst22.setText(rs.getString(2));
+					lst23.setText(rs.getString(3));
+					lst24.setText(rs.getString(4));
+					lst25.setText(rs.getString(5));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【"
+							+ lst21.getText().trim() + "】的信息！");
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+}
