@@ -140,3 +140,147 @@ public class MedicineFrame implements ActionListener {
 		}
 
 	}
+        public void actionPerformed(ActionEvent e) {
+		Object soruce = e.getSource();
+		ResultSet rs = null;
+		String mId = lst35.getText().trim();
+		String hId = lst36.getText().trim();
+
+		if (soruce == qry1) {
+			try {
+				if (mId.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的药物编号！");
+					return;
+				}
+				sql = "select * from Medicine where Mno='" + mId + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					lst31.setText(rs.getString(2));
+					lst32.setText(rs.getString(3));
+					lst35.setText(rs.getString(1));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + mId + "】！");
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == del1) {
+			try {
+				if (mId.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的药物编号！");
+					return;
+				}
+				sql = "delete from Medicine where Mno='" + mId + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + mId + "】！");
+				} else {
+					JOptionPane.showMessageDialog(null, "已删除【" + mId + "】的信息！");
+					clearFrameM();
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == add1) {
+			try {
+				if (mId.equals("")) {
+					JOptionPane.showMessageDialog(null, "药物编号不能为空！");
+					return;
+				}
+
+				sql = "select * from Medicine where Mno='" + mId + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "药物编号【" + mId
+							+ "】已经存在，请重新输入！");
+					return;
+				}
+
+				sql = "insert into Medicine(Mno,Mname,Mprice) values('"
+						+ lst35.getText().trim() + "','"
+						+ lst31.getText().trim() + "','"
+						+ lst32.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrameM();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == qry2) {
+			try {
+
+				if (hId.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要查询的化验编号！");
+					return;
+				}
+
+				sql = "select * from Examine where Eno='" + hId + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					lst33.setText(rs.getString(2));
+					lst34.setText(rs.getString(3));
+					lst36.setText(rs.getString(1));
+				} else {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + hId + "】！");
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} else if (soruce == del2) {
+			try {
+
+				if (hId.equals("")) {
+					JOptionPane.showMessageDialog(null, "请先输入要删除的药物编号！");
+					return;
+				}
+				sql = "delete from Examine where Ename='"
+						+ lst33.getText().trim() + "'";
+				int result = stmt.executeUpdate(sql);
+				if (result == 0) {
+					JOptionPane.showMessageDialog(null, "没有查询到【" + hId + "】！");
+				} else {
+					JOptionPane.showMessageDialog(null, "已删除【" + hId + "】的信息！");
+					clearFrameH();
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} else if (soruce == add2) {
+			try {
+
+				if (hId.equals("")) {
+					JOptionPane.showMessageDialog(null, "化验编号不能为空！");
+
+					return;
+				}
+
+				sql = "select * from Examine where Eno='" + hId + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next()) {
+					JOptionPane.showMessageDialog(null, "化验编号【" + hId
+							+ "】已经存在，请重新输入！");
+					return;
+				}
+
+				sql = "insert into Examine(Eno,Ename,Eprice) values('"
+						+ lst36.getText().trim() + "','"
+						+ lst33.getText().trim() + "','"
+						+ lst34.getText().trim() + "')";
+				stmt.executeUpdate(sql);
+				JOptionPane.showMessageDialog(null, "录入信息成功！");
+				clearFrameH();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
+	}
+
+}
